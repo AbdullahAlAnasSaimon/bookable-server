@@ -8,8 +8,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.jt8oxuk.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.rencz4l.mongodb.net/?retryWrites=true&w=majority`;
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -26,7 +26,20 @@ const run = async () => {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     const serviceCollection = client.db("bookable").collection("products");
-    
+
+    app.get("/products", async (req, res) => {
+      	try{
+        const query = {};
+        const cursor = serviceCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+        }
+        finally{
+
+        }
+    })
+
+
   }
   finally{}
 }
