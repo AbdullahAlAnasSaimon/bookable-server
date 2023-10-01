@@ -29,13 +29,24 @@ const run = async () => {
 
     const serviceCollection = client.db("bookable").collection("products");
 
-    app.get("/products", async (req, res) => {
+    app.get("/books", async (req, res) => {
       try {
         const query = {};
         const cursor = serviceCollection.find(query);
         const result = await cursor.toArray();
         res.send(result);
-      } finally {
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    app.post("/books", async (req, res) => {
+      try {
+        const data = req.body;
+        const result = await serviceCollection.insertOne(data);
+        res.send(result);
+      } catch (err) {
+        console.log(err);
       }
     });
 
