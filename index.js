@@ -132,6 +132,17 @@ const run = async () => {
       res.send({ status: true, data: result });
     });
 
+    app.get("/reviews", async (req, res) => {
+      try {
+        const query = {};
+        const cursor = reviewCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
     app.post("/reviews", async (req, res) => {
       try {
         const data = req.body;
