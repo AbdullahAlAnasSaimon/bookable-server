@@ -28,6 +28,7 @@ const run = async () => {
     );
 
     const serviceCollection = client.db("bookable").collection("products");
+    const reviewCollection = client.db("bookable").collection("reviews");
 
     app.get("/books", async (req, res) => {
       try {
@@ -54,7 +55,7 @@ const run = async () => {
       try {
         const id = req.params.id;
         const data = req.body;
-        const filter = { _id: ObjectId(id) };
+        const filter = { _id: new ObjectId(id) };
         const options = { upsert: true };
         const updateDoc = {
           $set: data,
@@ -129,6 +130,16 @@ const run = async () => {
       const result = await serviceCollection.find(query).toArray();
 
       res.send({ status: true, data: result });
+    });
+
+    app.post("/reviews", async (req, res) => {
+      try {
+        const data = req.body;
+        const result = await reviewCollection.insertOne(data);
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
     });
   } finally {
   }
