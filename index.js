@@ -132,9 +132,10 @@ const run = async () => {
       res.send({ status: true, data: result });
     });
 
-    app.get("/reviews", async (req, res) => {
+    app.get("/reviews/:bookId", async (req, res) => {
       try {
-        const query = {};
+        const id = req.params.bookId;
+        const query = { bookId: id };
         const cursor = reviewCollection.find(query);
         const result = await cursor.toArray();
         res.send(result);
