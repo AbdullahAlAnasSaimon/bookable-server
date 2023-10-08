@@ -29,6 +29,7 @@ const run = async () => {
 
     const serviceCollection = client.db("bookable").collection("products");
     const reviewCollection = client.db("bookable").collection("reviews");
+    const wishlistCollection = client.db("bookable").collection("wishlist");
 
     app.get("/books", async (req, res) => {
       try {
@@ -148,6 +149,16 @@ const run = async () => {
       try {
         const data = req.body;
         const result = await reviewCollection.insertOne(data);
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    app.post("/wishlist", async (req, res) => {
+      try {
+        const data = req.body;
+        const result = await wishlistCollection.insertOne(data);
         res.send(result);
       } catch (err) {
         console.log(err);
