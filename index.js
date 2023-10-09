@@ -164,6 +164,22 @@ const run = async () => {
         console.log(err);
       }
     });
+
+    app.get("/wishlist", async (req, res) => {
+      try {
+        const email = req.query;
+
+        if (!email) {
+          return res.status(400).json({ error: "Email parameter is required" });
+        }
+
+        const query = { user_email: email };
+        const result = await wishlistCollection.find(query).toArray();
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   } finally {
   }
 };
