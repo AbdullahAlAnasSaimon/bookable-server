@@ -183,6 +183,15 @@ const run = async () => {
 
     app.delete("/wishlist/:id", async (req, res) => {
       try {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const existingItem = await wishlistCollection.findOne(query);
+
+        if (!existingItem) {
+          return res.status(404).json({ message: "Wishlist item not found" });
+        }
+        const result = await wishlistCollection.deleteOne(query);
+        res.send(result);
       } catch (err) {
         console.log(err);
       }
