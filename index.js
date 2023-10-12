@@ -52,6 +52,13 @@ const run = async () => {
       }
     });
 
+    app.delete("/books/:id", async (req, res) => {
+      try {
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
     app.put("/book/:id", async (req, res) => {
       try {
         const id = req.params.id;
@@ -76,7 +83,6 @@ const run = async () => {
     app.get("/books", async (req, res) => {
       // const regex = new RegExp(query, "i");
       const queries = req.query;
-      console.log(queries);
 
       const modifiedQueries = {};
       Object.entries(queries).forEach((query) => {
