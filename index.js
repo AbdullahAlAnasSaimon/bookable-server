@@ -180,6 +180,13 @@ const run = async () => {
         console.log(err);
       }
     });
+
+    app.delete("/wishlist/:id", async (req, res) => {
+      try {
+      } catch (err) {
+        console.log(err);
+      }
+    });
   } finally {
   }
 };
