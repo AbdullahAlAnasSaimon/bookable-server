@@ -56,8 +56,7 @@ const run = async () => {
       try {
         const id = req.params.id;
         const query = { _id: ObjectId(id) };
-        const existingProduct = await serviceCollection.findOne(query);
-        const existingItem = await wishlistCollection.findOne(query);
+        const existingItem = await serviceCollection.findOne(query);
 
         if (!existingItem) {
           return res.status(404).json({ message: "Wishlist item not found" });
