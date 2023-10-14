@@ -55,7 +55,7 @@ const run = async () => {
     app.delete("/books/:id", async (req, res) => {
       try {
         const id = req.params.id;
-        const query = { _id: ObjectId(id) };
+        const query = { _id: new ObjectId(id) };
         const existingItem = await serviceCollection.findOne(query);
 
         if (!existingItem) {
@@ -199,7 +199,7 @@ const run = async () => {
     app.delete("/wishlist/:id", async (req, res) => {
       try {
         const id = req.params.id;
-        const query = { _id: ObjectId(id) };
+        const query = { productId: id };
         const existingItem = await wishlistCollection.findOne(query);
 
         if (!existingItem) {
