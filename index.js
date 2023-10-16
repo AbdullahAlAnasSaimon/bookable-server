@@ -214,6 +214,16 @@ const run = async () => {
         console.log(err);
       }
     });
+
+    app.post("/currently-reading", async (req, res) => {
+      try {
+        const data = req.body;
+        const result = await currentlyReadingCollection.insertOne(data);
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   } finally {
   }
 };
