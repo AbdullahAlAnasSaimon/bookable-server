@@ -30,6 +30,9 @@ const run = async () => {
     const serviceCollection = client.db("bookable").collection("products");
     const reviewCollection = client.db("bookable").collection("reviews");
     const wishlistCollection = client.db("bookable").collection("wishlist");
+    const currentlyReadingCollection = client
+      .db("bookable")
+      .collection("currentlyReading");
 
     app.get("/books", async (req, res) => {
       try {
