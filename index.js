@@ -227,7 +227,13 @@ const run = async () => {
 
     app.get("/currently-reading", async (req, res) => {
       try {
-        const query = {};
+        const { email } = req.query;
+
+        if (!email) {
+          return res.status(400).json({ error: "Email parameter is required" });
+        }
+
+        const query = { email };
         const result = await currentlyReadingCollection.find(query).toArray();
         res.send(result);
       } catch (err) {
