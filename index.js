@@ -218,6 +218,12 @@ const run = async () => {
     app.post("/currently-reading", async (req, res) => {
       try {
         const data = req.body;
+        const query = { email: data.email, productId: data.productId };
+        const queryResult = await wishlistCollection.findOne(query);
+        if (queryResult) {
+          const deleteResult = await wishlistCollection.deleteOne(query);
+          res.send(deleteResult);
+        }
         const result = await currentlyReadingCollection.insertOne(data);
         res.send(result);
       } catch (err) {
