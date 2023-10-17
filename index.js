@@ -224,6 +224,16 @@ const run = async () => {
         console.log(err);
       }
     });
+
+    app.get("/currently-reading", async (req, res) => {
+      try {
+        const query = {};
+        const result = await currentlyReadingCollection.find(query).toArray();
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   } finally {
   }
 };
