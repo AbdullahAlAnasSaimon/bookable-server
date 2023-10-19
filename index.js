@@ -222,7 +222,6 @@ const run = async () => {
         const queryResult = await wishlistCollection.findOne(query);
         if (queryResult) {
           const deleteResult = await wishlistCollection.deleteOne(query);
-          res.send(deleteResult);
         }
         const result = await currentlyReadingCollection.insertOne(data);
         res.send(result);
@@ -245,6 +244,12 @@ const run = async () => {
       } catch (err) {
         console.log(err);
       }
+    });
+
+    app.put("/finish-reading/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { productId: id };
+      const queryResult = await currentlyReadingCollection.findOne(query);
     });
   } finally {
   }
