@@ -250,6 +250,16 @@ const run = async () => {
       const id = req.params.id;
       const query = { productId: id };
       const queryResult = await currentlyReadingCollection.findOne(query);
+      if (!queryResult) {
+        return res.status(400).json({ message: "Product not found" });
+      }
+
+      const updatedDocument = await CurrentlyReading.updateOne(
+        query,
+        { $set: { finishedReading: true } },
+        { upsert: true }
+      );
+      res.send(updatedDocument);
     });
   } finally {
   }
