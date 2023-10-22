@@ -254,7 +254,7 @@ const run = async () => {
         return res.status(400).json({ message: "Product not found" });
       }
 
-      const updatedDocument = await CurrentlyReading.updateOne(
+      const updatedDocument = await currentlyReadingCollection.updateOne(
         query,
         { $set: { finishedReading: true } },
         { upsert: true }
