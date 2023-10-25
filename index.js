@@ -92,45 +92,9 @@ const run = async () => {
     });
 
     // API endpoint for searching books
-    app.get("/books", async (req, res) => {
-      // const regex = new RegExp(query, "i");
-      const queries = req.query;
+    /* app.get("/book-search", async (req, res) => {
 
-      const modifiedQueries = {};
-      Object.entries(queries).forEach((query) => {
-        modifiedQueries[query[0]] = query[1];
-      });
-
-      const { searchTerm, genre, publicationYear } = modifiedQueries;
-
-      let andCondition = [];
-
-      if (searchTerm) {
-        andCondition.push({
-          $or: [
-            {
-              name: {
-                $regex: searchTerm,
-                $options: "i",
-              },
-            },
-            {
-              seller_name: {
-                $regex: searchTerm,
-                $options: "i",
-              },
-            },
-            {
-              genre: {
-                $regex: searchTerm,
-                $options: "i",
-              },
-            },
-          ],
-        });
-      }
-
-      if (genre) {
+      /* if (genre) {
         andCondition.push({
           $and: [{ genre: { $regex: genre, $options: "i" } }],
         });
@@ -142,13 +106,37 @@ const run = async () => {
             { publicationDate: { $regex: publicationYear, $options: "i" } },
           ],
         });
+      } */
+
+    app.get("/book-search", async (req, res) => {
+      try {
+        const queries = req.query;
+        const { search } = queries;
+        console.log(queries);
+
+        const andCondition = [
+          {
+            $or: [
+              { title: { $regex: search, $options: "i" } },
+              { author: { $regex: search, $options: "i" } },
+              { genre: { $regex: search, $options: "i" } },
+            ],
+          },
+        ];
+
+        const query = andCondition.length > 0 ? { $and: andCondition } : {};
+
+        // Make sure you have a MongoDB database connection established here
+        const result = await serviceCollection.find(query).toArray();
+
+        res.send({ status: true, data: result });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          status: false,
+          message: "An error occurred while processing your request.",
+        });
       }
-
-      const query = andCondition.length > 0 ? { $and: andCondition } : {};
-
-      const result = await serviceCollection.find(query).toArray();
-
-      res.send({ status: true, data: result });
     });
 
     app.get("/reviews/:bookId", async (req, res) => {
