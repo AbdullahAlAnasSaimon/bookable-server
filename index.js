@@ -132,31 +132,26 @@ const run = async () => {
         console.log(queries);
         const { genre, publication_date } = queries;
 
-        const andCondition = [];
-
-        if (genre) {
-          andCondition.push({
-            $and: [{ genre: { $regex: genre, $options: "i" } }],
-          });
-        }
-
-        if (publication_date) {
-          andCondition.push({
-            $and: [
-              { publication_date: { $regex: publication_date, $options: "i" } },
-            ],
-          });
-        }
-
-        const query = andCondition.length > 0 ? { $and: andCondition } : {};
+        const productQuery = {
+          $and: [
+            {
+              $or: [
+                { genre: { $regex: genre, $options: "i" } }, // Matching genre
+                {
+                  publication_date: { $regex: publication_date, $options: "i" },
+                }, // Matching publication date
+              ],
+            },
+          ],
+        };
 
         // Make sure you have a MongoDB database connection established here
-        const result = await serviceCollection.find(query).toArray();
+        const result = await serviceCollection.find(productQuery).toArray();
 
         if (result.length > 0) {
           res.send({ status: true, data: result });
         } else {
-          res.send({ staus: true, message: "Sorry, No Book Found!" });
+          res.send({ status: true, message: "Sorry, No Book Found!" });
         }
       } catch (error) {
         console.error(error);
