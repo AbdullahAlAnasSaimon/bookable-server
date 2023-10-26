@@ -91,20 +91,6 @@ const run = async () => {
       }
     });
 
-    /* if (genre) {
-        andCondition.push({
-          $and: [{ genre: { $regex: genre, $options: "i" } }],
-        });
-      }
-
-      if (publicationYear) {
-        andCondition.push({
-          $and: [
-            { publicationDate: { $regex: publicationYear, $options: "i" } },
-          ],
-        });
-      } */
-
     app.get("/book-search", async (req, res) => {
       try {
         const queries = req.query;
@@ -137,6 +123,30 @@ const run = async () => {
           status: false,
           message: "An error occurred while processing your request.",
         });
+      }
+    });
+
+    app.get("/book-filter", async (req, res) => {
+      const queries = req.query;
+      console.log(queries);
+      const { genre, publication_date } = queries;
+
+      if (genre) {
+        const genreResult = [
+          {
+            $and: [{ genre: { $regex: genre, $options: "i" } }],
+          },
+        ];
+      }
+
+      if (publicationYear) {
+        const publicationYearResult = [
+          {
+            $and: [
+              { publicationDate: { $regex: publicationYear, $options: "i" } },
+            ],
+          },
+        ];
       }
     });
 
