@@ -95,7 +95,6 @@ const run = async () => {
       try {
         const queries = req.query;
         const { search } = queries;
-        console.log(queries);
 
         const andCondition = [
           {
@@ -129,16 +128,18 @@ const run = async () => {
     app.get("/book-filter", async (req, res) => {
       try {
         const queries = req.query;
-        console.log(queries);
         const { genre, publication_date } = queries;
 
         const productQuery = {
           $and: [
             {
               $or: [
-                { genre: { $regex: genre, $options: "i" } }, // Matching genre
+                { genre: { $regex: genre?.toString(), $options: "i" } }, // Matching genre
                 {
-                  publication_date: { $regex: publication_date, $options: "i" },
+                  publication_date: {
+                    $regex: publication_date?.toString(),
+                    $options: "i",
+                  },
                 }, // Matching publication date
               ],
             },
