@@ -91,10 +91,7 @@ const run = async () => {
       }
     });
 
-    // API endpoint for searching books
-    /* app.get("/book-search", async (req, res) => {
-
-      /* if (genre) {
+    /* if (genre) {
         andCondition.push({
           $and: [{ genre: { $regex: genre, $options: "i" } }],
         });
@@ -129,7 +126,11 @@ const run = async () => {
         // Make sure you have a MongoDB database connection established here
         const result = await serviceCollection.find(query).toArray();
 
-        res.send({ status: true, data: result });
+        if (result.length > 0) {
+          res.send({ status: true, data: result });
+        } else {
+          res.send({ staus: true, message: "Sorry, No Book Found!" });
+        }
       } catch (error) {
         console.error(error);
         res.status(500).json({
