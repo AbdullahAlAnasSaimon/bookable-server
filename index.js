@@ -127,26 +127,43 @@ const run = async () => {
     });
 
     app.get("/book-filter", async (req, res) => {
-      const queries = req.query;
-      console.log(queries);
-      const { genre, publication_date } = queries;
+      try {
+        const queries = req.query;
+        console.log(queries);
+        const { genre, publication_date } = queries;
 
-      if (genre) {
-        const genreResult = [
-          {
+        const andCondition = [];
+
+        if (genre) {
+          andCondition.push({
             $and: [{ genre: { $regex: genre, $options: "i" } }],
-          },
-        ];
-      }
+          });
+        }
 
-      if (publicationYear) {
-        const publicationYearResult = [
-          {
+        if (publication_date) {
+          andCondition.push({
             $and: [
-              { publicationDate: { $regex: publicationYear, $options: "i" } },
+              { publication_date: { $regex: publication_date, $options: "i" } },
             ],
-          },
-        ];
+          });
+        }
+
+        const query = andCondition.length > 0 ? { $and: andCondition } : {};
+
+        // Make sure you have a MongoDB database connection established here
+        const result = await serviceCollection.find(query).toArray();
+
+        if (result.length > 0) {
+          res.send({ status: true, data: result });
+        } else {
+          res.send({ staus: true, message: "Sorry, No Book Found!" });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          status: false,
+          message: "An error occurred while processing your request.",
+        });
       }
     });
 
