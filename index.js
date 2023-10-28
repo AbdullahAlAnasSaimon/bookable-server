@@ -133,14 +133,14 @@ const run = async () => {
         const productQuery = {
           $and: [
             {
-              $or: [
+              $and: [
                 { genre: { $regex: genre?.toString(), $options: "i" } }, // Matching genre
                 {
                   publication_date: {
                     $regex: publication_date?.toString(),
                     $options: "i",
                   },
-                }, // Matching publication date
+                },
               ],
             },
           ],
