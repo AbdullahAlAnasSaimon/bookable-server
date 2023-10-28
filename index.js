@@ -18,6 +18,10 @@ const client = new MongoClient(uri, {
   },
 });
 
+app.get("/", (req, res) => {
+  res.status(400).send("Running Server");
+});
+
 const run = async () => {
   try {
     await client.connect();
@@ -277,11 +281,7 @@ const run = async () => {
   }
 };
 
-run().catch((err) => console.log(err));
-
-app.get("/", (req, res) => {
-  res.status(400).send("Running Server");
-});
+await run().catch((err) => console.log(err));
 
 app.listen(port, () => {
   console.log("Server running on port", port);
