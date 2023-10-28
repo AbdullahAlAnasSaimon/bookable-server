@@ -19,18 +19,11 @@ const client = new MongoClient(uri, {
 });
 
 app.get("/", (req, res) => {
-  res.status(400).send("Running Server");
+  res.status(200).send("Running Server");
 });
 
 const run = async () => {
   try {
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-
     const serviceCollection = client.db("bookable").collection("products");
     const reviewCollection = client.db("bookable").collection("reviews");
     const wishlistCollection = client.db("bookable").collection("wishlist");
@@ -41,9 +34,8 @@ const run = async () => {
     app.get("/books", async (req, res) => {
       try {
         const query = {};
-        const cursor = serviceCollection.find(query);
-        const result = await cursor.toArray();
-        res.send(result);
+        const cursor = await serviceCollection.find(query).toArray();
+        res.send(cursor);
       } catch (err) {
         console.log(err);
       }
@@ -281,7 +273,7 @@ const run = async () => {
   }
 };
 
-await run().catch((err) => console.log(err));
+run().catch((err) => console.log(err));
 
 app.listen(port, () => {
   console.log("Server running on port", port);
